@@ -1,0 +1,12 @@
+[package]
+name = "heck-but-macros"
+version = "0.0.0"
+authors = ["Tamme Schichler <tamme@schichler.dev>"]
+edition = "2018"
+publish = false
+
+[lib]
+proc-macro = true
+
+[dependencies]
+heck = "0.3.1"
