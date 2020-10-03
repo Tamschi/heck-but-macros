@@ -70,5 +70,17 @@ fn case(input: TokenStream, case_str: fn(&str) -> String) -> TokenStream {
 }
 
 fn stringify(input: TokenStream) -> TokenStream {
-    TokenTree::Literal(pmLiteral::string(&format!("{}", input).trim())).into()
+    let mut input = input.into_iter();
+    let result = match input.next() {
+        Some(token) => TokenTree::Literal(match token {
+            TokenTree::Ident(ident) => pmLiteral::string(&ident.to_string()),
+            _ => todo!("Stringifcation of tokens other than Ident"),
+        })
+        .into(),
+        None => TokenStream::new(),
+    };
+    if input.next().is_some() {
+        todo!("Stringification of multiple input tokens")
+    }
+    result
 }
