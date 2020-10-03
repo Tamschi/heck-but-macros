@@ -1,12 +1,40 @@
 [package]
 name = "heck-but-macros"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["Tamme Schichler <tamme@schichler.dev>"]
 edition = "2018"
+description = "A proc macro wrapper around the heck crate, so that its casing functions can be applied to identifiers. Also contains a workaround for (limited) stringification."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/Tamschi/heck-but-macros"
+homepage = "https://github.com/Tamschi/heck-but-macros/tree/v0.0.1"
+documentation = "https://docs.rs/heck-but-macros/0.0.1"
+keywords = ["heck", "casing", "macro", "stringify"]
+categories = ["text-processing", "rust-patterns", "development-tools::build-utils"]
+readme = "README.md"
+include = [
+	"**/*.rs",
+	"!tests/unincluded_*.rs", # Tests of meta data files not included in the package.
+	"Cargo.toml",
+	"CHANGELOG.md",
+	"CODE_OF_CONDUCT.md",
+	"LICENSE-*",
+	"README.md",
+]
 publish = false
+
+[badges]
+travis-ci = { repository = "Tamschi/heck-but-macros", branch = "develop" }
+is-it-maintained-issue-resolution = { repository = "Tamschi/heck-but-macros" }
+is-it-maintained-open-issues = { repository = "Tamschi/heck-but-macros" }
+maintenance = { status = "experimental" }
 
 [lib]
 proc-macro = true
 
 [dependencies]
 heck = "0.3.1"
+
+[dev-dependencies]
+cargo-husky = "1.5.0"
+git_info = "0.1.2"
+version-sync = "0.9.1"
