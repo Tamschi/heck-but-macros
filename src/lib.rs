@@ -9,13 +9,8 @@ use heck::{
 	TitleCase,
 };
 use proc_macro::{
-	Group as pmGroup, Ident as pmIdent, Literal as pmLiteral, TokenStream, TokenTree,
+	Delimiter, Group as pmGroup, Ident as pmIdent, Literal as pmLiteral, TokenStream, TokenTree,
 };
-
-#[cfg(doctest)]
-pub mod readme {
-	doc_comment::doctest!("../README.md");
-}
 
 macro_rules! case_macro {
 	($Trait:ident::$fn:ident => $name:ident $stringify_name:ident) => {
@@ -60,14 +55,15 @@ fn case(input: TokenStream, case_str: fn(&str) -> String) -> TokenStream {
 	input
 		.into_iter()
 		.map(|token| {
-			use TokenTree::*;
 			let tree: TokenTree = match token {
-				Group(group) => {
+				TokenTree::Group(group) => {
 					pmGroup::new(group.delimiter(), case(group.stream(), case_str)).into()
 				}
-				Ident(ident) => pmIdent::new(&case_str(&format!("{}", ident)), ident.span()).into(),
-				punct @ Punct(_) => punct,
-				Literal(_) => todo!("Literals are not supported yet."),
+				TokenTree::Ident(ident) => {
+					pmIdent::new(&case_str(&format!("{}", ident)), ident.span()).into()
+				}
+				punct @ TokenTree::Punct(_) => punct,
+				TokenTree::Literal(_) => todo!("Literals are not supported yet."),
 			};
 			tree
 		})
@@ -77,11 +73,15 @@ fn case(input: TokenStream, case_str: fn(&str) -> String) -> TokenStream {
 fn stringify(input: TokenStream) -> TokenStream {
 	let mut input = input.into_iter();
 	let result = match input.next() {
-		Some(token) => TokenTree::Literal(match token {
-			TokenTree::Ident(ident) => pmLiteral::string(&ident.to_string()),
-			_ => todo!("Stringifcation of tokens other than Ident"),
-		})
-		.into(),
+		Some(token) => match token {
+			TokenTree::Group(group) if group.delimiter() == Delimiter::None => {
+				stringify(group.stream())
+			}
+			TokenTree::Ident(ident) => {
+				TokenTree::Literal(pmLiteral::string(&ident.to_string())).into()
+			}
+			other => todo!("Stringifcation of tokens other than Ident ({:?})", other),
+		},
 		None => TokenStream::new(),
 	};
 	if input.next().is_some() {
