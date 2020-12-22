@@ -5,7 +5,7 @@
 [![Docs.rs](https://docs.rs/heck-but-macros/badge.svg)](https://docs.rs/crates/heck-but-macros)
 
 ![Rust 1.40.0](https://img.shields.io/static/v1?logo=Rust&label=&message=1.40.0&color=grey)
-[![Build Status](https://travis-ci.com/Tamschi/heck-but-macros.svg?branch=develop)](https://travis-ci.com/Tamschi/heck-but-macros/branches)
+[![CI](https://github.com/Tamschi/heck-but-macros/workflows/CI/badge.svg?branch=develop)](https://github.com/Tamschi/heck-but-macros/actions?query=workflow%3ACI+branch%3Adevelop)
 ![Crates.io - License](https://img.shields.io/crates/l/heck-but-macros/0.0.1)
 
 [![GitHub](https://img.shields.io/static/v1?logo=GitHub&label=&message=%20&color=grey)](https://github.com/Tamschi/heck-but-macros)
